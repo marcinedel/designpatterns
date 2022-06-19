@@ -1,0 +1,90 @@
+
+
+
+import java.util.*;
+
+public abstract class Obserwator
+{
+	public abstract void Aktualizuj();
+}
+
+public abstract class Obserwowany
+{
+	private ArrayList<Obserwator> _obserwatorzy = new ArrayList<Obserwator>();
+
+	public final void DolaczObserwatora(Obserwator obserwator)
+	{
+		_obserwatorzy.add(obserwator);
+	}
+
+	public final void OdlaczObserwatora(Obserwator obserwator)
+	{
+		_obserwatorzy.remove(obserwator);
+	}
+
+	public final void Powiadom()
+	{
+		for (Obserwator o : _obserwatorzy)
+		{
+			o.Aktualizuj();
+		}
+	}
+}
+
+public class SpecyficznyObserwowany extends Obserwowany
+{
+	private String StanObserwowanego;
+	public final String getStanObserwowanego()
+	{
+		return StanObserwowanego;
+	}
+	public final void setStanObserwowanego(String value)
+	{
+		StanObserwowanego = value;
+	}
+}
+
+public class SpecyficznyObserwator extends Obserwator
+{
+	private String _nazwa;
+	private String _obserwatorStan;
+	private SpecyficznyObserwowany Obserwowany;
+	public final SpecyficznyObserwowany getObserwowany()
+	{
+		return Obserwowany;
+	}
+	public final void setObserwowany(SpecyficznyObserwowany value)
+	{
+		Obserwowany = value;
+	}
+
+	public SpecyficznyObserwator(SpecyficznyObserwowany obserwowany, String nazwa)
+	{
+		this.setObserwowany(obserwowany);
+		this._nazwa = nazwa;
+	}
+
+	@Override
+	public void Aktualizuj()
+	{
+		_obserwatorStan = getObserwowany().getStanObserwowanego();
+		System.out.printf("Obserwator %1$s ma nowy stan o wartości: %2$s" + "\r\n", _nazwa, _obserwatorStan);
+	}
+}
+
+public class Program
+{
+	public static void main(String[] args)
+	{
+		SpecyficznyObserwowany s = new SpecyficznyObserwowany();
+
+		s.DolaczObserwatora(new SpecyficznyObserwator(s, "X"));
+		s.DolaczObserwatora(new SpecyficznyObserwator(s, "Y"));
+		s.DolaczObserwatora(new SpecyficznyObserwator(s, "Z"));
+
+		s.setStanObserwowanego("ABC");
+		s.Powiadom();
+
+		Console.ReadKey();
+	}
+}

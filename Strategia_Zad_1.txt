@@ -1,0 +1,57 @@
+public abstract class Strategia
+{
+	public abstract void RozwiazProblem();
+}
+
+public class SpecyficznaStrategiaA extends Strategia
+{
+	@Override
+	public void RozwiazProblem()
+	{
+		System.out.println("Wywołano SpecyficznaStrategiaA.RozwiazProblem()");
+	}
+}
+
+
+public class SpecyficznaStrategiaB extends Strategia
+{
+	@Override
+	public void RozwiazProblem()
+	{
+		System.out.println("Wywołano SpecyficznaStrategiaB.RozwiazProblem()");
+	}
+}
+
+
+public class Kontekst
+{
+	private Strategia _strategia;
+
+	public Kontekst(Strategia strategia)
+	{
+		this._strategia = strategia;
+	}
+
+	public final void ZwrocProblem()
+	{
+		_strategia.RozwiazProblem();
+	}
+}
+
+
+public class Program
+{
+	public static void main(String[] args)
+	{
+		Kontekst context;
+
+		// Dwa konteksty z różnymi strategiami
+		context = new Kontekst(new SpecyficznaStrategiaA());
+		context.ZwrocProblem();
+
+		context = new Kontekst(new SpecyficznaStrategiaB());
+		context.ZwrocProblem();
+
+		Console.ReadKey();
+	}
+}

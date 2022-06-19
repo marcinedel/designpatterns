@@ -1,0 +1,53 @@
+import java.util.*;
+
+public class Kontekst
+{
+}
+
+
+public abstract class WyrazenieAbstrakcyjne
+{
+	public abstract void Interpretuj(Kontekst kontekst);
+}
+
+
+public class WyrazenieTerminalne extends WyrazenieAbstrakcyjne
+{
+	@Override
+	public void Interpretuj(Kontekst kontekst)
+	{
+		System.out.println("Wywołano WyrazenieTerminalne.Interpretuj()");
+	}
+
+
+private static class WyrazenieNieterminalne extends WyrazenieAbstrakcyjne
+{
+	@Override
+	public void Interpretuj(Kontekst kontekst)
+	{
+		System.out.println("Wywołano WyrazenieNieterminalne.Interpretuj()");
+	}
+}
+
+
+private static class Program
+{
+	public static void main(String[] args)
+	{
+		Kontekst kontekst = new Kontekst();
+
+		ArrayList wyrazenia = new ArrayList();
+
+		wyrazenia.add(new WyrazenieTerminalne());
+		wyrazenia.add(new WyrazenieNieterminalne());
+		wyrazenia.add(new WyrazenieTerminalne());
+		wyrazenia.add(new WyrazenieTerminalne());
+
+		for (WyrazenieAbstrakcyjne wyrazenie : wyrazenia)
+		{
+			wyrazenie.Interpretuj(kontekst);
+		}
+
+		Console.ReadKey();
+	}
+}

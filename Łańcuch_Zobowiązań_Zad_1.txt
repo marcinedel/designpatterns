@@ -1,0 +1,69 @@
+public abstract class AbstrakcyjnaObsluga
+{
+	protected AbstrakcyjnaObsluga nastepca;
+
+	public final void UstawNastepce(AbstrakcyjnaObsluga nastepca)
+	{
+		this.nastepca = nastepca;
+	}
+
+	public abstract void Obsluz(int zobowiazanie);
+}
+
+
+public class SpecyficznaObsluga1 extends AbstrakcyjnaObsluga
+{
+	@Override
+	public void Obsluz(int zobowiazanie)
+	{
+		if (zobowiazanie >= 0 && zobowiazanie < 10)
+		{
+			System.out.printf("%1$s Obsłużono zobowiazanie %2$s" + "\r\n", this.getClass().getSimpleName(), zobowiazanie);
+		}
+		else if (nastepca != null)
+		{
+			nastepca.Obsluz(zobowiazanie);
+		}
+	}
+}
+
+
+public class SpecyficznaObsluga2 extends AbstrakcyjnaObsluga
+{
+	@Override
+	public void Obsluz(int zobowiazanie)
+	{
+		if (zobowiazanie >= 10 && zobowiazanie < 20)
+		{
+			System.out.printf("%1$s Obsłużono zobowiazanie %2$s" + "\r\n", this.getClass().getSimpleName(), zobowiazanie);
+		}
+		else if (nastepca != null)
+		{
+			nastepca.Obsluz(zobowiazanie);
+		}
+	}
+}
+
+
+
+public class Program
+{
+	public static void main(String[] args)
+	{
+		// Konfiguracja łańcucha zobowiązań
+		AbstrakcyjnaObsluga h1 = new SpecyficznaObsluga1();
+		AbstrakcyjnaObsluga h2 = new SpecyficznaObsluga2();
+
+		h1.UstawNastepce(h2);
+
+		// Tablica zobowiązań
+		int[] zobowiazania = {1, 4, 17, 26, 18, 5, 28, 22};
+
+		for (int zobowiazanie : zobowiazania)
+		{
+			h1.Obsluz(zobowiazanie);
+		}
+
+		Console.ReadKey();
+	}
+}

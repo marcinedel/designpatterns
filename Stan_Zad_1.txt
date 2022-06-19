@@ -1,0 +1,66 @@
+public abstract class Stan
+{
+	public abstract void Odpowiedz(Kontekst kontekst);
+}
+
+public class Kontekst
+{
+	private Stan _stan;
+
+	public Kontekst(Stan stan)
+	{
+		this.setStan(stan);
+	}
+
+	public final Stan getStan()
+	{
+		return _stan;
+	}
+	public final void setStan(Stan value)
+	{
+		_stan = value;
+		System.out.println("Stan: " + _stan.getClass().getSimpleName());
+	}
+
+	public final void Zapytaj()
+	{
+		_stan.Odpowiedz(this);
+	}
+}
+
+public class SpecyficznyStanA extends Stan
+{
+	@Override
+	public void Odpowiedz(Kontekst kontekst)
+	{
+		kontekst.setStan(new SpecyficznyStanB());
+	}
+}
+
+public class SpecyficznyStanB extends Stan
+{
+	@Override
+	public void Odpowiedz(Kontekst kontekst)
+	{
+		kontekst.setStan(new SpecyficznyStanA());
+	}
+}
+
+public class Program
+{
+	public static void main(String[] args)
+	{
+		// Ustaw kontekst w stanie
+		Kontekst k = new Kontekst(new SpecyficznyStanA());
+
+		// Wywołaj zapytania zwracające stan
+		k.Zapytaj();
+		k.Zapytaj();
+		k.Zapytaj();
+		k.Zapytaj();
+
+		Console.ReadKey();
+	}
+}
+
+
